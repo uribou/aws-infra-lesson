@@ -20,6 +20,7 @@ resource "aws_instance" "db" {
   private_ip             = "10.0.2.10"
   key_name               = aws_key_pair.auth.id
   vpc_security_group_ids = [aws_security_group.db.id]
+  user_data              = file("db_user_data.sh")
 
   tags = {
     Name = "db-server"
