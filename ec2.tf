@@ -14,12 +14,12 @@ resource "aws_instance" "web" {
 }
 
 resource "aws_instance" "db" {
-  ami                         = var.ec2_ami
-  instance_type               = var.ec2_instance_type
-  subnet_id                   = aws_subnet.private.id
-  private_ip                  = "10.0.2.10"
-  key_name                    = aws_key_pair.auth.id
-  vpc_security_group_ids      = [aws_security_group.db.id]
+  ami                    = var.ec2_ami
+  instance_type          = var.ec2_instance_type
+  subnet_id              = aws_subnet.private.id
+  private_ip             = "10.0.2.10"
+  key_name               = aws_key_pair.auth.id
+  vpc_security_group_ids = [aws_security_group.db.id]
 
   tags = {
     Name = "db-server"
@@ -49,10 +49,10 @@ resource "aws_security_group" "web" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  egress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
+  ingress {
+    from_port   = -1
+    to_port     = -1
+    protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -60,6 +60,13 @@ resource "aws_security_group" "web" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = -1
+    to_port     = -1
+    protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
@@ -79,6 +86,13 @@ resource "aws_security_group" "db" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = -1
+    to_port     = -1
+    protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
