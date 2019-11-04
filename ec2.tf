@@ -6,6 +6,7 @@ resource "aws_instance" "web" {
   private_ip                  = "10.0.1.10"
   key_name                    = aws_key_pair.auth.id
   vpc_security_group_ids      = [aws_security_group.web.id]
+  user_data                   = file("web_user_data.sh")
 
   tags = {
     Name = "web-server"
